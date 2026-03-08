@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { useLanguage, translations } from '@/context/language-context'
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('')
@@ -11,6 +12,8 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const supabase = createClient()
+  const { language } = useLanguage()
+  const t = translations[language].admin.login
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
@@ -29,7 +32,7 @@ export default function AdminLoginPage() {
       // Full page navigation ensures cookies are properly sent to middleware
       window.location.href = '/admin'
     } catch {
-      setError('Connection error. Please try again.')
+      setError(t.connectionError)
       setLoading(false)
     }
   }
@@ -39,13 +42,13 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
         <div className="text-center mb-8">
           <h1 className="font-playfair text-3xl font-bold text-[#064e3b]">L&apos;Or de Tunis</h1>
-          <p className="text-gray-500 mt-2">Admin Dashboard</p>
+          <p className="text-gray-500 mt-2">{t.title}</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-5">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email
+              {t.email}
             </label>
             <input
               id="email"
@@ -60,7 +63,7 @@ export default function AdminLoginPage() {
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              Password
+              {t.password}
             </label>
             <input
               id="password"
@@ -83,7 +86,7 @@ export default function AdminLoginPage() {
             disabled={loading}
             className="w-full py-3 bg-[#064e3b] text-white rounded-lg font-medium hover:bg-[#065f46] transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? t.signingIn : t.signIn}
           </button>
         </form>
       </div>

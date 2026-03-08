@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useLanguage, translations } from '@/context/language-context'
 
 interface Plate {
   id: string
@@ -17,6 +18,8 @@ interface Plate {
 export default function AdminPlatesPage() {
   const [plates, setPlates] = useState<Plate[]>([])
   const [loading, setLoading] = useState(true)
+  const { language } = useLanguage()
+  const t = translations[language].admin.plates
 
   useEffect(() => {
     fetchPlates()
@@ -39,9 +42,22 @@ export default function AdminPlatesPage() {
   }
 
   async function deletePlate(id: string) {
-    if (!confirm('Are you sure you want to delete this plate?')) return
+    if (!confirm(t.deleteConfirm)) return
     await fetch(`/api/admin/plates/${id}`, { method: 'DELETE' })
     setPlates(plates.filter(p => p.id !== id))
+  }
+
+  function getPlateName(plate: Plate) {
+    return language === 'ar' ? plate.name_ar : language === 'fr' ? plate.name_fr : plate.name_en
+  }
+
+  function getPlateSubName(plate: Plate) {
+    return language === 'ar' ? plate.name_fr : language === 'fr' ? plate.name_en : plate.name_fr
+  }
+
+  function getCategoryName(cat: Plate['categories']) {
+    if (!cat) return '—'
+    return language === 'ar' ? cat.name_ar : language === 'fr' ? cat.name_fr : cat.name_en
   }
 
   if (loading) {
@@ -55,24 +71,24 @@ export default function AdminPlatesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Plates</h1>
+        <h1 className="text-2xl font-bold text-gray-900">{t.title}</h1>
         <Link
           href="/admin/plates/new"
           className="px-4 py-2 bg-[#064e3b] text-white rounded-lg hover:bg-[#065f46] transition text-sm font-medium"
         >
-          + Add Plate
+          {t.addPlate}
         </Link>
       </div>
 
       {plates.length === 0 ? (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
           <p className="text-4xl mb-3">🍽️</p>
-          <p className="text-gray-500 mb-4">No plates yet. Add your first plate!</p>
+          <p className="text-gray-500 mb-4">{t.noPlates}</p>
           <Link
             href="/admin/plates/new"
             className="inline-flex px-4 py-2 bg-[#064e3b] text-white rounded-lg hover:bg-[#065f46] transition text-sm"
           >
-            + Add Plate
+            {t.addPlate}
           </Link>
         </div>
       ) : (
@@ -81,12 +97,12 @@ export default function AdminPlatesPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50">
-                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Image</th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Name</th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Category</th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Price</th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Available</th>
-                  <th className="text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase">Actions</th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">{t.image}</th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">{t.name}</th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">{t.category}</th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">{t.price}</th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">{t.available}</th>
+                  <th className="text-right px-6 py-3 text-xs font-medium text-gray-500 uppercase">{t.actions}</th>
                 </tr>
               </thead>
               <tbody>
@@ -96,7 +112,7 @@ export default function AdminPlatesPage() {
                       {plate.image_url ? (
                         <img
                           src={plate.image_url}
-                          alt={plate.name_en}
+                          alt={getPlateName(plate)}
                           className="w-12 h-12 rounded-lg object-cover"
                         />
                       ) : (
@@ -106,11 +122,11 @@ export default function AdminPlatesPage() {
                       )}
                     </td>
                     <td className="px-6 py-4">
-                      <p className="text-sm font-medium text-gray-900">{plate.name_en}</p>
-                      <p className="text-xs text-gray-500">{plate.name_fr}</p>
+                      <p className="text-sm font-medium text-gray-900">{getPlateName(plate)}</p>
+                      <p className="text-xs text-gray-500">{getPlateSubName(plate)}</p>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
-                      {plate.categories?.name_en || '—'}
+                      {getCategoryName(plate.categories)}
                     </td>
                     <td className="px-6 py-4 text-sm font-medium text-gray-900">
                       {Number(plate.price).toFixed(2)} TND
@@ -135,13 +151,13 @@ export default function AdminPlatesPage() {
                           href={`/admin/plates/${plate.id}/edit`}
                           className="px-3 py-1.5 text-xs font-medium text-[#064e3b] border border-[#064e3b] rounded-md hover:bg-[#064e3b] hover:text-white transition"
                         >
-                          Edit
+                          {t.edit}
                         </Link>
                         <button
                           onClick={() => deletePlate(plate.id)}
                           className="px-3 py-1.5 text-xs font-medium text-red-600 border border-red-300 rounded-md hover:bg-red-600 hover:text-white transition"
                         >
-                          Delete
+                          {t.delete}
                         </button>
                       </div>
                     </td>

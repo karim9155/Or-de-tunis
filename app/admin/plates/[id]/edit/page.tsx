@@ -1,6 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
-import PlateForm from '@/components/admin/plate-form'
+import EditPlateClient from './edit-client'
 
 export default async function EditPlatePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -14,10 +14,5 @@ export default async function EditPlatePage({ params }: { params: Promise<{ id: 
 
   if (!plate) notFound()
 
-  return (
-    <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Edit Plate</h1>
-      <PlateForm plate={plate} />
-    </div>
-  )
+  return <EditPlateClient plate={plate} />
 }

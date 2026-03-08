@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useLanguage, translations } from '@/context/language-context'
 
 interface Category {
   id: string
@@ -29,6 +30,8 @@ interface PlateFormProps {
 export default function PlateForm({ plate }: PlateFormProps) {
   const router = useRouter()
   const isEdit = !!plate
+  const { language } = useLanguage()
+  const t = translations[language].admin.plateForm
 
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(false)
@@ -53,6 +56,10 @@ export default function PlateForm({ plate }: PlateFormProps) {
       .then(r => r.json())
       .then(setCategories)
   }, [])
+
+  function getCategoryLabel(c: Category) {
+    return language === 'ar' ? c.name_ar : language === 'fr' ? c.name_fr : c.name_en
+  }
 
   function updateField(field: string, value: string | boolean) {
     setForm(prev => ({ ...prev, [field]: value }))
@@ -109,24 +116,24 @@ export default function PlateForm({ plate }: PlateFormProps) {
     <form onSubmit={handleSubmit} className="max-w-3xl space-y-8">
       {/* Category & Price */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Info</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">{t.basicInfo}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t.category}</label>
             <select
               value={form.category_id}
               onChange={e => updateField('category_id', e.target.value)}
               required
               className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#064e3b]"
             >
-              <option value="">Select category...</option>
+              <option value="">{t.selectCategory}</option>
               {categories.map(c => (
-                <option key={c.id} value={c.id}>{c.name_en} / {c.name_fr}</option>
+                <option key={c.id} value={c.id}>{getCategoryLabel(c)}</option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Price (TND)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t.price}</label>
             <input
               type="number"
               step="0.01"
@@ -139,7 +146,7 @@ export default function PlateForm({ plate }: PlateFormProps) {
           </div>
         </div>
         <div className="mt-4 flex items-center gap-3">
-          <label className="text-sm font-medium text-gray-700">Available</label>
+          <label className="text-sm font-medium text-gray-700">{t.available}</label>
           <button
             type="button"
             onClick={() => updateField('available', !form.available)}
@@ -156,10 +163,10 @@ export default function PlateForm({ plate }: PlateFormProps) {
 
       {/* Names */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Plate Name</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">{t.plateName}</h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">English</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t.english}</label>
             <input
               type="text"
               value={form.name_en}
@@ -169,7 +176,7 @@ export default function PlateForm({ plate }: PlateFormProps) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">French</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t.french}</label>
             <input
               type="text"
               value={form.name_fr}
@@ -179,7 +186,7 @@ export default function PlateForm({ plate }: PlateFormProps) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Arabic</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t.arabic}</label>
             <input
               type="text"
               value={form.name_ar}
@@ -194,10 +201,10 @@ export default function PlateForm({ plate }: PlateFormProps) {
 
       {/* Descriptions */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Description</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">{t.description}</h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">English</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t.english}</label>
             <textarea
               value={form.description_en}
               onChange={e => updateField('description_en', e.target.value)}
@@ -206,7 +213,7 @@ export default function PlateForm({ plate }: PlateFormProps) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">French</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t.french}</label>
             <textarea
               value={form.description_fr}
               onChange={e => updateField('description_fr', e.target.value)}
@@ -215,7 +222,7 @@ export default function PlateForm({ plate }: PlateFormProps) {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Arabic</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t.arabic}</label>
             <textarea
               value={form.description_ar}
               onChange={e => updateField('description_ar', e.target.value)}
@@ -229,7 +236,7 @@ export default function PlateForm({ plate }: PlateFormProps) {
 
       {/* Image Upload */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Image</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">{t.image}</h2>
         <div className="flex items-start gap-6">
           {imagePreview ? (
             <img src={imagePreview} alt="Preview" className="w-32 h-32 rounded-xl object-cover" />
@@ -241,7 +248,7 @@ export default function PlateForm({ plate }: PlateFormProps) {
           <div className="flex-1">
             <label className="block">
               <span className="inline-flex px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium cursor-pointer hover:bg-gray-200 transition">
-                {uploading ? 'Uploading...' : 'Choose Image'}
+                {uploading ? t.uploading : t.chooseImage}
               </span>
               <input
                 type="file"
@@ -251,7 +258,7 @@ export default function PlateForm({ plate }: PlateFormProps) {
                 className="hidden"
               />
             </label>
-            <p className="text-xs text-gray-500 mt-2">JPG, PNG or WebP. Max 5MB.</p>
+            <p className="text-xs text-gray-500 mt-2">{t.imageHint}</p>
           </div>
         </div>
       </div>
@@ -263,14 +270,14 @@ export default function PlateForm({ plate }: PlateFormProps) {
           disabled={loading}
           className="px-6 py-3 bg-[#064e3b] text-white rounded-lg font-medium hover:bg-[#065f46] transition disabled:opacity-50"
         >
-          {loading ? 'Saving...' : isEdit ? 'Update Plate' : 'Create Plate'}
+          {loading ? t.saving : isEdit ? t.updatePlate : t.createPlate}
         </button>
         <button
           type="button"
           onClick={() => router.back()}
           className="px-6 py-3 text-gray-600 border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition"
         >
-          Cancel
+          {t.cancel}
         </button>
       </div>
     </form>

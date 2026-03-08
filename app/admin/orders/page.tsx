@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useLanguage, translations } from '@/context/language-context'
 
 interface OrderItem {
   id: string
@@ -54,6 +55,8 @@ export default function AdminOrdersPage() {
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all')
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const { language } = useLanguage()
+  const t = translations[language].admin.orders
 
   useEffect(() => {
     fetchOrders()
@@ -77,6 +80,26 @@ export default function AdminOrdersPage() {
     }
   }
 
+  function getStatusLabel(status: string) {
+    return t[status as keyof typeof t] || status
+  }
+
+  function getPlateName(plate: OrderItem['plates']) {
+    if (!plate) return t.unknownPlate
+    return language === 'ar' ? plate.name_ar : language === 'fr' ? plate.name_fr : plate.name_en
+  }
+
+  function getFilterLabel(f: string) {
+    if (f === 'all') return `${t.all} (${orders.length})`
+    return `${getStatusLabel(f)} (${orders.filter(o => o.status === f).length})`
+  }
+
+  function getActionLabel(nextStatus: string) {
+    if (nextStatus === 'accepted') return t.accept
+    if (nextStatus === 'rejected') return t.reject
+    return `${t.mark} ${getStatusLabel(nextStatus)}`
+  }
+
   const filteredOrders = filter === 'all' ? orders : orders.filter(o => o.status === filter)
 
   if (loading) {
@@ -89,7 +112,7 @@ export default function AdminOrdersPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Orders</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">{t.title}</h1>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2 mb-6">
@@ -97,13 +120,13 @@ export default function AdminOrdersPage() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium capitalize transition ${
+            className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${
               filter === f
                 ? 'bg-[#064e3b] text-white'
                 : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
             }`}
           >
-            {f === 'all' ? `All (${orders.length})` : `${f} (${orders.filter(o => o.status === f).length})`}
+            {getFilterLabel(f)}
           </button>
         ))}
       </div>
@@ -111,7 +134,7 @@ export default function AdminOrdersPage() {
       {filteredOrders.length === 0 ? (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
           <p className="text-4xl mb-3">📋</p>
-          <p className="text-gray-500">No {filter === 'all' ? '' : filter} orders</p>
+          <p className="text-gray-500">{t.noOrders}{filter !== 'all' ? ` (${getStatusLabel(filter)})` : ''}</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -129,13 +152,13 @@ export default function AdminOrdersPage() {
                   </p>
                 </div>
                 <div className="text-sm text-gray-600">
-                  <span className="font-medium">{order.event_type}</span> · {order.guest_count} guests
+                  <span className="font-medium">{order.event_type}</span> · {order.guest_count} {t.guests}
                 </div>
                 <div className="text-sm text-gray-600">
                   {new Date(order.event_date).toLocaleDateString()}
                 </div>
-                <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium capitalize ${STATUS_COLORS[order.status] || ''}`}>
-                  {order.status}
+                <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[order.status] || ''}`}>
+                  {getStatusLabel(order.status)}
                 </span>
                 <svg
                   className={`w-5 h-5 text-gray-400 transition-transform ${expandedId === order.id ? 'rotate-180' : ''}`}
@@ -149,7 +172,7 @@ export default function AdminOrdersPage() {
               {expandedId === order.id && (
                 <div className="border-t border-gray-100 p-5">
                   {/* Order items */}
-                  <h3 className="text-sm font-semibold text-gray-700 mb-3">Order Items</h3>
+                  <h3 className="text-sm font-semibold text-gray-700 mb-3">{t.orderItems}</h3>
                   <div className="space-y-3 mb-5">
                     {order.order_items.map(item => (
                       <div key={item.id} className="flex items-center gap-3">
@@ -160,10 +183,10 @@ export default function AdminOrdersPage() {
                         )}
                         <div className="flex-1">
                           <p className="text-sm font-medium text-gray-900">
-                            {item.plates?.name_en || 'Unknown plate'}
+                            {getPlateName(item.plates)}
                           </p>
                           <p className="text-xs text-gray-500">
-                            Qty: {item.quantity} × {Number(item.price_at_order).toFixed(2)} TND
+                            {t.qty}: {item.quantity} × {Number(item.price_at_order).toFixed(2)} TND
                           </p>
                         </div>
                         <p className="text-sm font-medium text-gray-900">
@@ -172,7 +195,7 @@ export default function AdminOrdersPage() {
                       </div>
                     ))}
                     <div className="pt-3 border-t border-gray-100 flex justify-between">
-                      <span className="text-sm font-semibold text-gray-700">Total</span>
+                      <span className="text-sm font-semibold text-gray-700">{t.total}</span>
                       <span className="text-sm font-bold text-gray-900">
                         {order.order_items.reduce((sum, i) => sum + i.quantity * Number(i.price_at_order), 0).toFixed(2)} TND
                       </span>
@@ -182,22 +205,22 @@ export default function AdminOrdersPage() {
                   {/* Contact info */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5 text-sm">
                     <div>
-                      <span className="text-gray-500">Phone:</span>{' '}
+                      <span className="text-gray-500">{t.phone}:</span>{' '}
                       <span className="text-gray-900">{order.customer_phone || '—'}</span>
                     </div>
                     <div>
-                      <span className="text-gray-500">Email:</span>{' '}
+                      <span className="text-gray-500">{t.email}:</span>{' '}
                       <span className="text-gray-900">{order.customer_email || '—'}</span>
                     </div>
                     <div>
-                      <span className="text-gray-500">Ordered:</span>{' '}
+                      <span className="text-gray-500">{t.ordered}:</span>{' '}
                       <span className="text-gray-900">{new Date(order.created_at).toLocaleString()}</span>
                     </div>
                   </div>
 
                   {order.notes && (
                     <div className="mb-5 p-3 bg-gray-50 rounded-lg text-sm text-gray-700">
-                      <span className="font-medium">Notes:</span> {order.notes}
+                      <span className="font-medium">{t.notes}:</span> {order.notes}
                     </div>
                   )}
 
@@ -208,11 +231,9 @@ export default function AdminOrdersPage() {
                         <button
                           key={nextStatus}
                           onClick={() => updateStatus(order.id, nextStatus)}
-                          className={`px-4 py-2 rounded-lg text-sm font-medium transition capitalize ${STATUS_BTN[nextStatus] || 'bg-gray-200'}`}
+                          className={`px-4 py-2 rounded-lg text-sm font-medium transition ${STATUS_BTN[nextStatus] || 'bg-gray-200'}`}
                         >
-                          {nextStatus === 'accepted' ? 'Accept' :
-                           nextStatus === 'rejected' ? 'Reject' :
-                           `Mark ${nextStatus}`}
+                          {getActionLabel(nextStatus)}
                         </button>
                       ))}
                     </div>

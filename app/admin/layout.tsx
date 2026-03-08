@@ -4,17 +4,26 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useState } from 'react'
+import { useLanguage, translations, type Language } from '@/context/language-context'
 
-const navItems = [
-  { href: '/admin', label: 'Dashboard', icon: '📊' },
-  { href: '/admin/plates', label: 'Plates', icon: '🍽️' },
-  { href: '/admin/orders', label: 'Orders', icon: '📋' },
+const LANG_OPTIONS: { value: Language; label: string }[] = [
+  { value: 'en', label: 'EN' },
+  { value: 'fr', label: 'FR' },
+  { value: 'ar', label: 'AR' },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { language, setLanguage, isRTL } = useLanguage()
+  const t = translations[language].admin.sidebar
+
+  const navItems = [
+    { href: '/admin', label: t.dashboard, icon: '📊' },
+    { href: '/admin/plates', label: t.plates, icon: '🍽️' },
+    { href: '/admin/orders', label: t.orders, icon: '📋' },
+  ]
 
   if (pathname === '/admin/login') {
     return <>{children}</>
@@ -28,7 +37,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className={`min-h-screen bg-gray-50 flex ${isRTL ? 'flex-row-reverse' : ''}`}>
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -39,15 +48,38 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-[#064e3b] text-white transform transition-transform duration-200 ease-in-out ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        className={`fixed lg:static inset-y-0 ${isRTL ? 'right-0' : 'left-0'} z-50 w-64 bg-[#064e3b] text-white transform transition-transform duration-200 ease-in-out ${
+          sidebarOpen
+            ? 'translate-x-0'
+            : isRTL
+              ? 'translate-x-full lg:translate-x-0'
+              : '-translate-x-full lg:translate-x-0'
         }`}
       >
         <div className="p-6">
           <Link href="/admin" className="block">
             <h1 className="font-playfair text-xl font-bold text-[#d4af37]">L&apos;Or de Tunis</h1>
-            <p className="text-emerald-300 text-xs mt-1">Admin Dashboard</p>
+            <p className="text-emerald-300 text-xs mt-1">{t.title}</p>
           </Link>
+        </div>
+
+        {/* Language Switcher */}
+        <div className="px-4 mb-4">
+          <div className="flex bg-white/10 rounded-lg p-1">
+            {LANG_OPTIONS.map(opt => (
+              <button
+                key={opt.value}
+                onClick={() => setLanguage(opt.value)}
+                className={`flex-1 py-1.5 text-xs font-medium rounded-md transition ${
+                  language === opt.value
+                    ? 'bg-[#d4af37] text-[#064e3b]'
+                    : 'text-emerald-200 hover:text-white'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         <nav className="px-4 space-y-1">
@@ -78,14 +110,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             className="flex items-center gap-3 px-4 py-3 text-emerald-200 hover:text-white text-sm transition mb-1"
           >
             <span>🌐</span>
-            View Site
+            {t.viewSite}
           </Link>
           <button
             onClick={handleLogout}
             className="flex items-center gap-3 px-4 py-3 text-emerald-200 hover:text-white text-sm transition w-full"
           >
             <span>🚪</span>
-            Logout
+            {t.logout}
           </button>
         </div>
       </aside>
