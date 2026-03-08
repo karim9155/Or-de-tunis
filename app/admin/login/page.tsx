@@ -17,16 +17,21 @@ export default function AdminLoginPage() {
     setError('')
     setLoading(true)
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
 
-    if (error) {
-      setError(error.message)
+      if (error) {
+        setError(error.message)
+        setLoading(false)
+        return
+      }
+
+      // Full page navigation ensures cookies are properly sent to middleware
+      window.location.href = '/admin'
+    } catch {
+      setError('Connection error. Please try again.')
       setLoading(false)
-      return
     }
-
-    router.push('/admin')
-    router.refresh()
   }
 
   return (
