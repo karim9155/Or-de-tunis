@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
 import { useLanguage } from '@/context/language-context'
 import { useCart } from '@/context/cart-context'
 import { useAuth } from '@/context/auth-context'
@@ -40,6 +41,7 @@ const t = {
     total: 'Total',
     noPlates: 'No dishes available in this category yet.',
     signIn: 'Sign In',
+    logout: 'Logout',
     myOrders: 'My Orders',
     unavailable: 'Unavailable',
     currency: 'TND',
@@ -54,6 +56,7 @@ const t = {
     total: 'Total',
     noPlates: 'Aucun plat disponible dans cette catégorie.',
     signIn: 'Connexion',
+    logout: 'Déconnexion',
     myOrders: 'Mes commandes',
     unavailable: 'Indisponible',
     currency: 'TND',
@@ -68,6 +71,7 @@ const t = {
     total: 'المجموع',
     noPlates: 'لا توجد أطباق متوفرة في هذه الفئة حتى الآن.',
     signIn: 'تسجيل الدخول',
+    logout: 'تسجيل الخروج',
     myOrders: 'طلباتي',
     unavailable: 'غير متوفر',
     currency: 'دينار',
@@ -84,10 +88,24 @@ function getDesc(item: { description_en: string; description_fr: string; descrip
 
 export default function MenuPage() {
   const { language } = useLanguage()
+  const router = useRouter()
   const { addItem, itemCount, total } = useCart()
-  const { user } = useAuth()
+  const { user, signOut } = useAuth()
   const text = t[language] || t.en
   const isArabic = language === 'ar'
+
+  function getUserDisplayName() {
+    if (!user) return ''
+    if (user.user_metadata?.full_name) return user.user_metadata.full_name
+    const email = user.email || ''
+    if (email.includes('@phone.')) return email.split('@')[0]
+    return email.split('@')[0]
+  }
+
+  async function handleLogout() {
+    await signOut()
+    router.refresh()
+  }
 
   const [categories, setCategories] = useState<Category[]>([])
   const [plates, setPlates] = useState<Plate[]>([])
@@ -144,12 +162,23 @@ export default function MenuPage() {
           </Link>
           <div className="flex items-center gap-3">
             {user ? (
-              <Link
-                href="/menu/orders"
-                className="text-sm text-[#064e3b] hover:underline font-medium"
-              >
-                {text.myOrders}
-              </Link>
+              <>
+                <span className="text-sm text-gray-600 hidden sm:inline">
+                  {getUserDisplayName()}
+                </span>
+                <Link
+                  href="/menu/orders"
+                  className="text-sm text-[#064e3b] hover:underline font-medium"
+                >
+                  {text.myOrders}
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="text-sm text-red-600 hover:underline font-medium"
+                >
+                  {text.logout}
+                </button>
+              </>
             ) : (
               <Link
                 href="/auth?redirect=/menu"
