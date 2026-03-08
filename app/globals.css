@@ -1,0 +1,102 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+:root {
+  --background: 0 0% 99%;
+  --foreground: 160 44% 15%;
+  --primary: 160 56% 20%;
+  --primary-foreground: 0 0% 99%;
+  --secondary: 24 89% 38%;
+  --secondary-foreground: 0 0% 99%;
+  --accent: 45 100% 54%;
+  --accent-foreground: 160 56% 20%;
+  --muted: 0 0% 95%;
+  --muted-foreground: 0 0% 42%;
+  --card: 0 0% 99%;
+  --card-foreground: 160 44% 15%;
+}
+
+.dark {
+  --background: 160 44% 15%;
+  --foreground: 0 0% 99%;
+  --primary: 0 0% 99%;
+  --primary-foreground: 160 56% 20%;
+  --secondary: 24 89% 60%;
+  --secondary-foreground: 160 44% 15%;
+  --accent: 45 100% 54%;
+  --accent-foreground: 160 56% 20%;
+  --muted: 160 30% 25%;
+  --muted-foreground: 0 0% 65%;
+  --card: 160 35% 22%;
+  --card-foreground: 0 0% 99%;
+}
+
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-border: hsl(160 20% 88%);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-inter), sans-serif;
+  }
+
+  html[dir='rtl'] body {
+    direction: rtl;
+  }
+
+  /* Luxury typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+    font-family: var(--font-playfair), serif;
+  }
+
+  html[lang='ar'] body {
+    font-family: var(--font-almarai), sans-serif;
+  }
+
+  html[lang='ar'] h1,
+  html[lang='ar'] h2,
+  html[lang='ar'] h3,
+  html[lang='ar'] h4,
+  html[lang='ar'] h5,
+  html[lang='ar'] h6 {
+    font-family: var(--font-noto-kufi), serif;
+  }
+}
+
+@layer components {
+  .shimmer-button {
+    position: relative;
+    background: linear-gradient(
+      90deg,
+      #064e3b 0%,
+      #0a5f4a 50%,
+      #064e3b 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 3s linear infinite;
+  }
+
+  .glass-card {
+    @apply bg-white/40 backdrop-blur-md rounded-lg border;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .glass-card.dark {
+    @apply bg-white/10 rounded-lg border;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}
