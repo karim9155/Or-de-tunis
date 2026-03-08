@@ -134,7 +134,8 @@ export default function AdminPlatesPage() {
                     <td className="px-6 py-4">
                       <button
                         onClick={() => toggleAvailability(plate)}
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                        dir="ltr"
+                        className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${
                           plate.available ? 'bg-emerald-500' : 'bg-gray-300'
                         }`}
                       >
