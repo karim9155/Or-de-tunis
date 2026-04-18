@@ -58,35 +58,19 @@ export const translations = {
   en: {
     nav: {
       home: 'Home',
-      products: 'Products',
+      menu: 'Menu',
       catering: 'Catering',
       about: 'About',
       contact: 'Contact',
-      menu: 'Menu',
     },
     hero: {
       title: "L'Or de Tunis",
-      subtitle: 'Premium Tunisian Culinary Treasures',
-      cta: 'Explore Collection',
+      subtitle: 'Authentic Tunisian Cuisine Delivered to Your Door',
+      cta: 'View Our Menu',
     },
-    products: {
-      title: 'Our Collections',
-      olive: {
-        name: 'Premium Olive Oils',
-        desc: 'Single-origin extra virgin olive oils from our heritage estates',
-      },
-      dates: {
-        name: 'Exceptional Dates',
-        desc: 'Handpicked premium varieties from Tunisia\'s finest date palms',
-      },
-      harissa: {
-        name: 'Artisanal Harissa',
-        desc: 'Traditional North African spice paste, crafted with heritage recipes',
-      },
-      pastry: {
-        name: 'Pastry Collection',
-        desc: 'Delicate baklava and traditional pastries with premium ingredients',
-      },
+    menu: {
+      title: 'Our Menu',
+      subtitle: 'Discover our authentic Tunisian dishes, crafted with love and tradition',
     },
     catering: {
       title: 'Premium Catering Services',
@@ -103,8 +87,8 @@ export const translations = {
       },
     },
     about: {
-      title: 'Our Heritage',
-      desc: 'For generations, L\'Or de Tunis has been the guardian of Tunisian culinary traditions, sourcing only the finest ingredients from our homeland.',
+      title: 'Our Story',
+      desc: 'At L\'Or de Tunis, we bring the rich flavors of Tunisia straight to your table. Every dish is prepared with authentic recipes passed down through generations, using the freshest ingredients.',
     },
     footer: {
       newsletter: 'Subscribe to our newsletter',
@@ -203,35 +187,19 @@ export const translations = {
   fr: {
     nav: {
       home: 'Accueil',
-      products: 'Produits',
+      menu: 'Menu',
       catering: 'Restauration',
       about: 'À propos',
       contact: 'Contact',
-      menu: 'Menu',
     },
     hero: {
       title: "L'Or de Tunis",
-      subtitle: 'Trésors Culinaires Tunisiens Premium',
-      cta: 'Explorer la Collection',
+      subtitle: 'Cuisine Tunisienne Authentique Livrée Chez Vous',
+      cta: 'Voir Notre Menu',
     },
-    products: {
-      title: 'Nos Collections',
-      olive: {
-        name: 'Huiles d\'Olive Premium',
-        desc: 'Huiles d\'olive extra vierges monovariétales de nos domaines patrimoniaux',
-      },
-      dates: {
-        name: 'Dattes Exceptionnelles',
-        desc: 'Variétés premium sélectionnées des meilleurs palmiers tunisiens',
-      },
-      harissa: {
-        name: 'Harissa Artisanale',
-        desc: 'Pâte d\'épices nord-africaine traditionnelle, préparée selon les recettes du patrimoine',
-      },
-      pastry: {
-        name: 'Collection de Pâtisseries',
-        desc: 'Pâtisseries délicates et baklava traditionnels avec des ingrédients premium',
-      },
+    menu: {
+      title: 'Notre Menu',
+      subtitle: 'Découvrez nos plats tunisiens authentiques, préparés avec amour et tradition',
     },
     catering: {
       title: 'Services de Restauration Premium',
@@ -248,8 +216,8 @@ export const translations = {
       },
     },
     about: {
-      title: 'Notre Héritage',
-      desc: 'Depuis des générations, L\'Or de Tunis est le gardien des traditions culinaires tunisiennes, en sélectionnant uniquement les meilleurs ingrédients de notre terre natale.',
+      title: 'Notre Histoire',
+      desc: 'Chez L\'Or de Tunis, nous apportons les riches saveurs de la Tunisie directement à votre table. Chaque plat est préparé avec des recettes authentiques transmises de génération en génération.',
     },
     footer: {
       newsletter: 'Abonnez-vous à notre infolettre',
@@ -348,35 +316,19 @@ export const translations = {
   ar: {
     nav: {
       home: 'الرئيسية',
-      products: 'المنتجات',
+      menu: 'القائمة',
       catering: 'الطعام',
       about: 'معلومات',
       contact: 'اتصل',
-      menu: 'القائمة',
     },
     hero: {
       title: 'ذهب تونس',
-      subtitle: 'الكنوز الطهوية التونسية الفاخرة',
-      cta: 'استكشف المجموعة',
+      subtitle: 'المطبخ التونسي الأصيل يصل إلى بابك',
+      cta: 'شاهد قائمتنا',
     },
-    products: {
-      title: 'مجموعاتنا',
-      olive: {
-        name: 'زيوت الزيتون الممتازة',
-        desc: 'زيوت زيتون بكر ممتازة أحادية المصدر من عقاراتنا التراثية',
-      },
-      dates: {
-        name: 'التمور الاستثنائية',
-        desc: 'أصناف ممتازة مختارة بعناية من أفضل نخيل التمر التونسي',
-      },
-      harissa: {
-        name: 'الحريسة الحرفية',
-        desc: 'معجون التوابل شمال أفريقي تقليدي، مصنوع وفقاً للوصفات التراثية',
-      },
-      pastry: {
-        name: 'مجموعة الحلويات',
-        desc: 'حلويات رقيقة وبقلاوة تقليدية بمكونات ممتازة',
-      },
+    menu: {
+      title: 'قائمتنا',
+      subtitle: 'اكتشف أطباقنا التونسية الأصيلة، المحضرة بحب وتقاليد عريقة',
     },
     catering: {
       title: 'خدمات الطعام الفاخرة',
@@ -393,8 +345,8 @@ export const translations = {
       },
     },
     about: {
-      title: 'تراثنا',
-      desc: 'لأجيال، كانت ذهب تونس حامية التقاليد الطهوية التونسية، باختيار أفضل المكونات من وطننا الحبيب فقط.',
+      title: 'قصتنا',
+      desc: 'في ذهب تونس، نقدم لكم النكهات الغنية لتونس مباشرة إلى طاولتكم. كل طبق محضر بوصفات أصيلة توارثتها الأجيال باستخدام أجود المكونات الطازجة.',
     },
     footer: {
       newsletter: 'اشترك في رسالتنا الإخبارية',

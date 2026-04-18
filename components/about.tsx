@@ -8,9 +8,9 @@ export function About() {
   const t = translations[language]
 
   const stats = [
-    { label: language === 'en' ? 'Years Heritage' : language === 'fr' ? 'Années Héritage' : 'سنوات التراث', value: '75+' },
-    { label: language === 'en' ? 'Products' : language === 'fr' ? 'Produits' : 'منتجات', value: '50+' },
-    { label: language === 'en' ? 'Global Customers' : language === 'fr' ? 'Clients Mondiaux' : 'عملاء عالميين', value: '10K+' },
+    { label: language === 'en' ? 'Dishes Served Daily' : language === 'fr' ? 'Plats Servis / Jour' : 'أطباق يومياً', value: '200+' },
+    { label: language === 'en' ? 'Menu Items' : language === 'fr' ? 'Éléments du Menu' : 'أطباق في القائمة', value: '50+' },
+    { label: language === 'en' ? 'Happy Customers' : language === 'fr' ? 'Clients Satisfaits' : 'عملاء سعداء', value: '10K+' },
   ]
 
   return (
@@ -65,14 +65,14 @@ export function About() {
               <div className="aspect-square bg-gradient-to-br from-accent via-secondary to-primary rounded-xl opacity-80" />
               <div className="absolute bottom-6 right-6 left-6 bg-white/90 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/20">
                 <p className="font-playfair font-bold text-primary mb-2">
-                  {language === 'en' ? 'Premium Quality' : language === 'fr' ? 'Qualité Premium' : 'جودة ممتازة'}
+                  {language === 'en' ? 'Made Fresh Daily' : language === 'fr' ? 'Préparé Frais Chaque Jour' : 'يُحضر طازجاً يومياً'}
                 </p>
                 <p className="font-inter text-sm text-foreground/60">
                   {language === 'en'
-                    ? 'Each product is carefully selected and tested'
+                    ? 'Every dish is prepared fresh with authentic recipes'
                     : language === 'fr'
-                    ? 'Chaque produit est soigneusement sélectionné'
-                    : 'يتم اختيار كل منتج بعناية وفحصه'}
+                    ? 'Chaque plat est préparé frais avec des recettes authentiques'
+                    : 'كل طبق محضر طازجاً بوصفات أصيلة'}
                 </p>
               </div>
             </div>

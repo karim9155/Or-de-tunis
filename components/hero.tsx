@@ -47,7 +47,7 @@ export function Hero() {
           variants={itemVariants}
           className="font-inter text-accent text-lg font-semibold mb-4 tracking-widest uppercase"
         >
-          {isRTL ? 'الحلال الفاخر التونسي' : 'Tunisian Heritage'}
+          {isRTL ? 'المطبخ التونسي الأصيل' : 'Authentic Tunisian Cuisine'}
         </motion.p>
 
         <motion.h1
@@ -69,7 +69,7 @@ export function Hero() {
           className="flex gap-4 flex-col sm:flex-row"
         >
           <motion.a
-            href="#products"
+            href="#menu"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="px-8 py-4 bg-primary text-primary-foreground font-inter font-semibold rounded-lg hover:bg-primary/90 transition-colors"

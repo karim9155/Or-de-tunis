@@ -72,10 +72,10 @@ export function Footer() {
             <p className="font-playfair text-2xl font-bold mb-4">L'Or</p>
             <p className="font-inter text-sm text-primary-foreground/70">
               {language === 'en'
-                ? 'Premium Tunisian culinary excellence since 1949'
+                ? 'Authentic Tunisian cuisine delivered to your door'
                 : language === 'fr'
-                ? 'Excellence culinaire tunisienne premium depuis 1949'
-                : 'التفوق الطهوي التونسي الممتاز منذ 1949'}
+                ? 'Cuisine tunisienne authentique livrée chez vous'
+                : 'المطبخ التونسي الأصيل يصل إلى بابك'}
             </p>
           </motion.div>
 
@@ -89,14 +89,8 @@ export function Footer() {
               {language === 'en' ? 'Quick Links' : language === 'fr' ? 'Liens Rapides' : 'روابط سريعة'}
             </h4>
             <ul className="space-y-2 font-inter text-sm text-primary-foreground/70">
-              <li><a href="#products" className="hover:text-accent transition">
-                {language === 'en' ? 'Products' : language === 'fr' ? 'Produits' : 'منتجات'}
-              </a></li>
-              <li><a href="#catering" className="hover:text-accent transition">
-                {language === 'en' ? 'Catering' : language === 'fr' ? 'Restauration' : 'الطعام'}
-              </a></li>
-              <li><a href="#about" className="hover:text-accent transition">
-                {language === 'en' ? 'About' : language === 'fr' ? 'À propos' : 'معلومات'}
+              <li><a href="#menu" className="hover:text-accent transition">
+                {language === 'en' ? 'Menu' : language === 'fr' ? 'Menu' : 'القائمة'}
               </a></li>
             </ul>
           </motion.div>
@@ -111,8 +105,12 @@ export function Footer() {
               {language === 'en' ? 'Contact' : language === 'fr' ? 'Contact' : 'اتصل'}
             </h4>
             <ul className="space-y-2 font-inter text-sm text-primary-foreground/70">
-              <li>+216 71 123 456</li>
-              <li>info@lordetunis.com</li>
+              <li className="flex items-center gap-2">
+                <a href="tel:+21628190777" className="hover:text-accent transition">+216 28 190 777</a>
+              </li>
+              <li className="text-xs text-primary-foreground/50">
+                {language === 'en' ? '📞 Call & WhatsApp' : language === 'fr' ? '📞 Appel & WhatsApp' : '📞 اتصال وواتساب'}
+              </li>
               <li>Tunis, Tunisia</li>
             </ul>
           </motion.div>

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useLanguage, translations, Language } from '@/context/language-context'
 import { motion } from 'framer-motion'
 
-const menuLabel = { en: 'Menu', fr: 'Menu', ar: 'القائمة' }
+const orderLabel = { en: 'Order Now', fr: 'Commander', ar: 'اطلب الآن' }
 
 export function Navbar() {
   const { language, setLanguage, isRTL } = useLanguage()
@@ -12,9 +12,7 @@ export function Navbar() {
 
   const navItems = [
     { key: 'home', label: t.nav.home },
-    { key: 'products', label: t.nav.products },
-    { key: 'catering', label: t.nav.catering },
-    { key: 'about', label: t.nav.about },
+    { key: 'menu', label: t.nav.menu },
   ]
 
   return (
@@ -53,7 +51,7 @@ export function Navbar() {
             href="/menu"
             className="px-4 py-2 bg-accent text-white font-inter text-sm font-semibold rounded-lg hover:bg-accent/90 transition-colors"
           >
-            {menuLabel[language] || 'Menu'}
+            {orderLabel[language] || 'Order Now'}
           </Link>
         <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
           {(['en', 'fr', 'ar'] as Language[]).map((lang) => (
